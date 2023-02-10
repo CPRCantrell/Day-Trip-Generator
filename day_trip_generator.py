@@ -3,61 +3,54 @@ import random as r
 def main():
     print()
 
-    #Initializing pre-set lists
-    list_of_destinations = ["Atlanta", "Marietta", "Kennesaw", "Acworth", "Woodstock", "Dunwoody"]
-    list_of_restaurants = ["Wendy's", "Sub-way", "Fogo de Chao", "Stoney River", "Rotating Sushi Bar"]
-    list_of_entertainment = ["Concert", "Piedmont Park", "Centennial Park", "World of Coke", "Moive", "Georgia Aquarium", "Belt Line"]
-    list_of_transportation = ["Car", "Bike", "Uber", "Marta", "Friend's Car"]
-    master_list = [list_of_destinations, list_of_restaurants, list_of_entertainment, list_of_transportation]
-    options_in_master_list = ["Destination", "Restaurant", "Entertainment", "Transportation"]
+    #Create Ditionary
+    master_dictionary = {
+        "Destination": ["Atlanta", "Marietta", "Kennesaw", "Acworth", "Woodstock", "Dunwoody"],
+        "Restaurant": ["Wendy's", "Sub-way", "Fogo de Chao", "Stoney River", "Rotating Sushi Bar"],
+        "Entertainment": ["Concert", "Piedmont Park", "Centennial Park", "World of Coke", "Moive", "Georgia Aquarium", "Belt Line"],
+        "Transportation": ["Car", "Bike", "Uber", "Marta", "Friend's Car"]
+    }
+    selections = {}
 
     #Picks a selection at random
-    def select_random_choices(list_of_choices):
+    def select_random_choice(list_of_choices):
         return r.choice(list_of_choices)
 
-    #Prints selection
-    def display_selected_items(item, selected):
-        print(f'{item} - {selected}')
+    #displays dictionary with key and value
+    def display_dictionary(dictionary):
+        for key, item in dictionary.items():
+            print(f'{key} - {item}')
 
-    def verify_user_response():
-        pass
+    def fill_dictionary(dictionary):
+        new_dict = {key:select_random_choice(value) for (key,value) in dictionary.items()}
+        return new_dict
 
-    #collects user response
-    def user_response(prompt, exceptable_responses = []):
-        if len(exceptable_responses) != 0:
-            User_answer = "empty"
-            print(f'{prompt}?')
-            while True:
-                print("Exceptable answers are", end =" ")
-                for answer in exceptable_responses:
-                    print(f"[{answer}] ", end ="")
-                User_answer = input("Response: ")
-                for answer in exceptable_responses:
-                    if User_answer.lower() == answer:
-                        return answer
-                print("Invalid Entry")
+    #Validate user input
+    def verify_user_response(prompt, valid_input = {}):
+        test = input(f"{prompt}: ").lower()
+        value_test = list({key:value for (key,value) in valid_input.items() if key == test}.values())
+        if len(value_test) > 0:
+            return value_test[0]
 
-        return input(f'{prompt}: ')
-
-    selections = []
-    while True: 
-        selections = []
-        for lists in master_list:
-            selections.append(select_random_choices(lists))
-
+        print()
+        print("Invalid Entry")
+        print(f"Exceptable answers are {list(valid_input.keys())}")
+        verify_user_response(prompt, valid_input)
+    
+    #Main code
+    while True:
+        selections = fill_dictionary(master_dictionary)
         print("Day Trip: ")
-        for i in range(len(selections)):
-            display_selected_items(options_in_master_list[i],selections[i])
+        display_dictionary(selections)
         
-        response = user_response("Would You like to take this trip or reroll",["yes", "no", "n","y"])
-        if response == "yes" or response == 'y':
+        if verify_user_response("Do you want this list",{"yes": True, "no":False}):
+            print()
             break
+
         print()
     
-    print()
     print("You have selected: ")
-    for i in range(len(selections)):
-        display_selected_items(options_in_master_list[i],selections[i])
+    display_dictionary(selections)
     print("as your day plans!")
     print()
 
