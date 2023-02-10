@@ -25,23 +25,23 @@ def main():
     #collects user response
     def user_response(prompt, exceptable_responses = []):
         if len(exceptable_responses) != 0:
-            response = "empty"
+            User_answer = "empty"
             print(f'{prompt}?')
             while True:
-                print("Exceptable answers are [", end ="")
+                print("Exceptable answers are", end =" ")
                 for answer in exceptable_responses:
-                    print(f"{answer}] ", end ="")
-                response = input("Response: ")
+                    print(f"[{answer}] ", end ="")
+                User_answer = input("Response: ")
                 for answer in exceptable_responses:
-                    if response.lower() == answer:
+                    if User_answer.lower() == answer:
                         return answer
-                    else:
-                        print("Invalid Entry")
+                print("Invalid Entry")
 
         return input(f'{prompt}: ')
 
     selections = []
     while True: 
+        selections = []
         for lists in master_list:
             selections.append(select_random_choices(lists))
 
@@ -52,11 +52,14 @@ def main():
         response = user_response("Would You like to take this trip or reroll",["yes", "no", "n","y"])
         if response == "yes" or response == 'y':
             break
+        print()
     
+    print()
     print("You have selected: ")
     for i in range(len(selections)):
         display_selected_items(options_in_master_list[i],selections[i])
     print("as your day plans!")
+    print()
 
 if __name__ == '__main__':
     main()
