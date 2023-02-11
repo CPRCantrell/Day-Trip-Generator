@@ -1,8 +1,6 @@
 import random as r
 
 def main():
-    print()
-
     #Create Ditionary
     master_dictionary = {
         "Destination": ["Atlanta", "Marietta", "Kennesaw", "Acworth", "Woodstock", "Dunwoody"],
@@ -10,20 +8,12 @@ def main():
         "Entertainment": ["Concert", "Piedmont Park", "Centennial Park", "World of Coke", "Moive", "Georgia Aquarium", "Belt Line"],
         "Transportation": ["Car", "Bike", "Uber", "Marta", "Friend's Car"]
     }
-    selections = {}
 
-    #Picks a selection at random
-    def select_random_choice(list_of_choices):
-        return r.choice(list_of_choices)
-
-    #displays dictionary with key and value
-    def display_dictionary(dictionary):
+    #displays dictionary with key and value w/ prompt
+    def display_dictionary(prompt, dictionary):
+        print(f"{prompt}")
         for key, item in dictionary.items():
             print(f'{key} - {item}')
-
-    def fill_dictionary(dictionary):
-        new_dict = {key:select_random_choice(value) for (key,value) in dictionary.items()}
-        return new_dict
 
     #Validate user input
     def verify_user_response(prompt, valid_input = {}):
@@ -32,27 +22,20 @@ def main():
         if len(value_test) > 0:
             return value_test[0]
 
-        print()
-        print("Invalid Entry")
-        print(f"Exceptable answers are {list(valid_input.keys())}")
+        print(f"\nInvalid Entry \nExceptable answers are {list(valid_input.keys())}")
         verify_user_response(prompt, valid_input)
     
     #Main code
-    while True:
-        selections = fill_dictionary(master_dictionary)
-        print("Day Trip: ")
-        display_dictionary(selections)
+    def run_system():
+        selections = {key:r.choice(value) for (key,value) in master_dictionary.items()}
         
+        display_dictionary("\nDay Trip:", selections)
         if verify_user_response("Do you want this list",{"yes": True, "no":False}):
-            print()
-            break
+           display_dictionary("\nYou have selected The following as your plans:", selections)
+        else:
+            run_system()
 
-        print()
-    
-    print("You have selected: ")
-    display_dictionary(selections)
-    print("as your day plans!")
-    print()
+    run_system()
 
 if __name__ == '__main__':
     main()
